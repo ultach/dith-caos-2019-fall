@@ -1,7 +1,7 @@
 #include "stdint.h"
 #include "stdio.h"
 
-const int DIDGIT_SHIFT = 10;
+const int DIDGITS_SHIFT = 10;
 const int UPPERCASE_SHIFT = 36;
 const int SET_SIZE_MAX = 62;
 
@@ -20,13 +20,13 @@ void print(uint64_t set)
 {
     for (int i = 0; i < SET_SIZE_MAX; ++i) 
     {
-        if (i < DIDGIT_SHIFT && (((set >> i) & 1))) 
+        if (i < DIDGITS_SHIFT && (((set >> i) & 1))) 
         {
             printf("%c", (i + '0'));
         }
-        else if (i >= DIDGIT_SHIFT && i < UPPERCASE_SHIFT && (((set >> i) & 1))) 
+        else if (i >= DIDGITS_SHIFT && i < UPPERCASE_SHIFT && (((set >> i) & 1))) 
         {
-            printf("%c", (i + 'A' - DIDGIT_SHIFT));
+            printf("%c", (i + 'A' - DIDGITS_SHIFT));
         }
         else if (i >= UPPERCASE_SHIFT && (((set >> i) & 1))) 
         {
@@ -49,7 +49,7 @@ int main ()
         }
         else if ('Z' >= symbol && symbol >= 'A') 
         {
-            temporary_set = change_bit(temporary_set, symbol - 'A' + DIDGIT_SHIFT, 1);
+            temporary_set = change_bit(temporary_set, symbol - 'A' + DIDGITS_SHIFT, 1);
         }
         else if ('z' >= symbol && symbol >= 'a') 
         {
