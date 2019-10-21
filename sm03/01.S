@@ -1,11 +1,10 @@
-	.text
-	.global	main
+    .text
+    .global	main
 main:
     push   {r4, r5, lr}
     ldr    r4, =stdin
     ldr    r5, =stdout
     b      loop
-
 cond:
     subs   r0, r0, #48
     cmp    r0, #9
