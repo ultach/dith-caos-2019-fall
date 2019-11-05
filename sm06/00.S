@@ -15,7 +15,7 @@ _start:
 	mov	ebx, 1
 	int	0x80
 
-    .data
+	.data
 hello_world:
 	.string	"Hello, World!\n"
 hello_world_ptr:
