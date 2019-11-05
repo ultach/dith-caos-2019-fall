@@ -1,7 +1,7 @@
 #include <asm/unistd_32.h>
-    .intel_syntax noprefix
-	.text
-	.global _start
+     .intel_syntax noprefix
+     .text
+     .global _start
 _start:
     push ebp
     mov  ebp, esp
