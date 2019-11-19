@@ -1,43 +1,29 @@
 #include <inttypes.h>
+#include <limits.h>
 #include <stdio.h>
-#include <windows.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
-typedef struct {
-    int value;
-    uint32_t next_pointer;
-} Item;
-
-int main(int argc, TCHAR* argv[])
+int main()
 {
-    HANDLE inputFile = CreateFileA(
-        argv[1],
-        GENERIC_READ,
-        0,
-        NULL,
-        OPEN_EXISTING,
-        FILE_ATTRIBUTE_NORMAL,
-        NULL);
-    if (inputFile == INVALID_HANDLE_VALUE) {
-        printf("CAN'T OPEN FILE!\n");
-        return 0;
-    }
-    DWORD nBytesRead;
-    Item item;
-    LARGE_INTEGER liMoveTo;
-    while (1) {
-        BOOL bResult =
-            ReadFile(inputFile, &item, sizeof(item), &nBytesRead, NULL);
-        if (bResult && nBytesRead == 0) {
-            break;
+    char file_name[PATH_MAX];
+    uint64_t result = 0;
+    struct stat st;
+    char* nl;
+    while (fgets(file_name, sizeof(file_name), stdin)) {
+        nl = memchr(file_name, '\n', sizeof(file_name));
+        if (nl) {
+            *nl = '\0';
         }
-        printf("%d ", item.value);
-        liMoveTo.QuadPart = item.next_pointer;
-        if (item.next_pointer == 0 ||
-            SetFilePointerEx(inputFile, liMoveTo, NULL, FILE_BEGIN) == 0) {
-            break;
+        if (lstat(file_name, &st) != -1) {
+            if (S_ISREG(st.st_mode)) {
+                result += st.st_size;
+            }
         }
     }
-    printf("\n");
-    CloseHandle(inputFile);
+    printf("%llu\n", result);
     return 0;
 }
